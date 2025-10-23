@@ -1,3 +1,4 @@
+import { clientEnv } from "@/env/env.client";
 import { isDirectusError } from "@directus/sdk";
 import { TRPCError } from "@trpc/server";
 import { clsx, type ClassValue } from "clsx";
@@ -21,4 +22,15 @@ export const handleError = (error: unknown) => {
       cause: error,
     });
   }
+};
+
+export const getDirectusAssetUrl = (assetId: string) => {
+  return `${clientEnv.NEXT_PUBLIC_DIRECTUS_URL}/assets/${assetId}`;
+};
+
+export const getFullName = (user: {
+  first_name: string;
+  last_name: string;
+}) => {
+  return `${user.first_name} ${user.last_name}`;
 };

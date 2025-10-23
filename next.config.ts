@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
     useLightningcss: true,
     typedEnv: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "directus.thehightable.app",
+        port: "",
+        pathname: "/assets/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

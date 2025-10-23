@@ -13,6 +13,9 @@ const fields = [
   "summary",
   "id",
   "status",
+  {
+    user_created: ["first_name", "last_name", "email", "avatar"],
+  },
 ] as const;
 
 export const blogsRouter = createTRPCRouter({
