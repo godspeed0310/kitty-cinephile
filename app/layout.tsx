@@ -1,4 +1,3 @@
-import BrandHeader from "@/components/BrandHeader";
 import { STATIC_DESCRIPTION, STATIC_TITLE } from "@/constants/metadata";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
@@ -39,12 +38,7 @@ export const RootLayout = ({
       <body
         className={` ${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
       >
-        <ThemeProvider attribute="class">
-          <main className="space-y-5 flex flex-col max-w-7xl mx-auto px-5">
-            <BrandHeader />
-            {children}
-          </main>
-        </ThemeProvider>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
       </body>
     </html>
   );

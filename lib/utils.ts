@@ -42,3 +42,9 @@ export const formatDate = (date: string | Date) => {
     day: "numeric",
   }).format(new Date(date));
 };
+
+export const getInitials = (name: string) => {
+  const names = name.split(" ");
+  const initials = names.map((n) => n.charAt(0).toUpperCase()).join("");
+  return initials;
+};

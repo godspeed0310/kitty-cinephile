@@ -8,7 +8,7 @@ const Home = async () => {
   const [featured, ...rest] = await caller.blogs.getAll();
 
   return (
-    <main className="flex flex-col gap-5 pb-5">
+    <main className="flex flex-col gap-5">
       <FeaturedBlog blog={featured} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {rest.map((blog) => (

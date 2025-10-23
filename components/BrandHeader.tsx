@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const BrandHeader = () => {
   return (
-    <div className="relative w-full h-48 css-grid-pattern-fixed px-5 mt-5 flex flex-col justify-center mb-3">
+    <div className="relative w-full h-48 css-grid-pattern-fixed px-5 flex flex-col justify-center mb-3">
       <Link href="/">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-fleur-de-leah">
           Kitty Cinephile

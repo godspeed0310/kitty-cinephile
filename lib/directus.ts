@@ -8,6 +8,7 @@ type DirectusUser = {
   last_name: string;
   email: string;
   avatar: string;
+  description: string | null;
 };
 
 type DirectusSchema = {

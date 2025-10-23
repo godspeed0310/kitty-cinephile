@@ -14,7 +14,7 @@ const fields = [
   "id",
   "status",
   {
-    user_created: ["first_name", "last_name", "email", "avatar"],
+    user_created: ["first_name", "last_name", "email", "avatar", "description"],
   },
 ] as const;
 
@@ -24,7 +24,7 @@ export const blogsRouter = createTRPCRouter({
       .request(
         readItems("blogs", {
           filter: { status: { _eq: "published" } },
-          fields,
+          fields: fields.filter((field) => field !== "content"),
           sort: ["-date_created"],
         })
       )
