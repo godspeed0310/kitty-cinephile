@@ -2,6 +2,8 @@ import BlogCard from "@/components/BlogCard";
 import FeaturedBlog from "@/components/FeaturedBlog";
 import { caller } from "@/trpc/server";
 
+export const revalidate = 3600;
+
 const Home = async () => {
   const [featured, ...rest] = await caller.blogs.getAll();
 

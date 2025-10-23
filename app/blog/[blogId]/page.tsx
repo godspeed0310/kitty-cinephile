@@ -4,6 +4,8 @@ import { getDirectusAssetUrl, getFullName } from "@/lib/utils";
 import { caller } from "@/trpc/server";
 import Image from "next/image";
 
+export const revalidate = 3600;
+
 type Props = Readonly<{
   params: Promise<{ blogId: string }>;
 }>;
