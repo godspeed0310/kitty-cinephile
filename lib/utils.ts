@@ -34,3 +34,11 @@ export const getFullName = (user: {
 }) => {
   return `${user.first_name} ${user.last_name}`;
 };
+
+export const formatDate = (date: string | Date) => {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(date));
+};

@@ -1,23 +1,18 @@
+import BlogCard from "@/components/BlogCard";
+import FeaturedBlog from "@/components/FeaturedBlog";
 import { caller } from "@/trpc/server";
-import { Route } from "next";
-import Link from "next/link";
 
 const Home = async () => {
-  const blogs = await caller.blogs.getAll();
+  const [featured, ...rest] = await caller.blogs.getAll();
 
   return (
-    <main className="flex flex-col gap-5 py-5">
-      {blogs.map((blog) => (
-        <div key={blog.id}>
-          <Link
-            href={`/blog/${blog.id}` as Route}
-            className="text-2xl font-bold"
-          >
-            {blog.title}
-          </Link>
-          <p className="text-sm text-muted-foreground">{blog.summary}</p>
-        </div>
-      ))}
+    <main className="flex flex-col gap-5 pb-5">
+      <FeaturedBlog blog={featured} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {rest.map((blog) => (
+          <BlogCard key={blog.id} blog={blog} />
+        ))}
+      </div>
     </main>
   );
 };

@@ -122,4 +122,10 @@
   body {
     @apply bg-background text-foreground font-inter;
   }
+  .css-grid-pattern-fixed {
+    background-size: 1rem 1rem;
+    background-image:
+      linear-gradient(to right, var(--muted) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--muted) 1px, transparent 1px);
+  }
 }
