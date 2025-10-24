@@ -1,4 +1,5 @@
 import { clientEnv } from "@/env/env.client";
+import { serverEnv } from "@/env/env.server";
 import { isDirectusError } from "@directus/sdk";
 import { TRPCError } from "@trpc/server";
 import { clsx, type ClassValue } from "clsx";
@@ -47,4 +48,8 @@ export const getInitials = (name: string) => {
   const names = name.split(" ");
   const initials = names.map((n) => n.charAt(0).toUpperCase()).join("");
   return initials;
+};
+
+export const getBaseUrl = () => {
+  return serverEnv.VERCEL_URL ?? "http://localhost:3000";
 };

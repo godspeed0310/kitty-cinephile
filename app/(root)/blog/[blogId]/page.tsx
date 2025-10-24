@@ -1,11 +1,57 @@
+import { DEFAULT_REVALIDATE_SECONDS } from "@/constants";
+import { getBaseUrl, getDirectusAssetUrl, getFullName } from "@/lib/utils";
 import { caller, HydrateClient, prefetch, trpc } from "@/trpc/server";
 import BlogDetailsView from "@/views/BlogDetailsView";
+import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const revalidate = DEFAULT_REVALIDATE_SECONDS;
 
 type Props = Readonly<{
   params: Promise<{ blogId: string }>;
 }>;
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const { blogId } = await params;
+  try {
+    const blog = await caller.metadata.getSeoMetadata({ blogId });
+    const authorName = getFullName(blog.user_created);
+    const baseUrl = getBaseUrl();
+
+    return {
+      title: blog.title,
+      description: blog.summary,
+      authors: [{ name: authorName }],
+      keywords: blog.categories,
+      openGraph: {
+        title: blog.title,
+        description: blog.summary,
+        type: "article",
+        publishedTime: blog.date_created,
+        modifiedTime: blog.date_updated,
+        authors: [authorName],
+        images: getDirectusAssetUrl(blog.featured_image),
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: blog.title,
+        description: blog.summary,
+        images: getDirectusAssetUrl(blog.featured_image),
+      },
+      alternates: {
+        canonical: `${baseUrl}/blog/${blogId}`,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Blog Not Found",
+      description: "The requested blog could not be found.",
+    };
+  }
+};
+
 
 export const generateStaticParams = async () => {
   const params = await caller.metadata.getStaticParams();

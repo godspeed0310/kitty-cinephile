@@ -65,7 +65,7 @@ const BlogDetailsView = ({ blogId }: Props) => {
             <div className="flex-1 flex flex-col items-start justify-center">
               <h3 className="font-bold">{fullName}</h3>
               <p className="text-xs text-muted-foreground">
-                {details.user_created.description ||
+                {details.user_created.description ??
                   "No description available."}
               </p>
             </div>
@@ -83,7 +83,7 @@ const BlogDetailsView = ({ blogId }: Props) => {
             <div className="flex-1 flex flex-col items-start justify-center">
               <h3 className="font-bold">{fullName}</h3>
               <p className="text-xs text-muted-foreground">
-                {details.user_created.description ||
+                {details.user_created.description ??
                   "No description available."}
               </p>
             </div>
