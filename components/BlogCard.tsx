@@ -44,11 +44,7 @@ const BlogCard = ({ blog }: Props) => {
           </div>
         </ViewTransition>
         <ViewTransition name={`rating-${blog.id}`}>
-          <StarRating
-            variant="compact"
-            rating={blog.rating}
-            className="hidden md:flex mt-1"
-          />
+          <StarRating variant="compact" rating={blog.rating} className="mt-1" />
         </ViewTransition>
       </article>
     </Link>

@@ -1,5 +1,9 @@
+"use client";
+import "client-only";
+
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { directusImageLoader } from "@/lib/directusImageLoader";
 import { formatDate, getFullName } from "@/lib/utils";
 import { Blog } from "@/types/Blog";
@@ -14,9 +18,11 @@ type Props = Readonly<{
 const FeaturedBlog = ({ blog }: Props) => {
   const fullName = getFullName(blog.user_created);
   const publishedDate = formatDate(blog.date_created);
+  const isMobile = useIsMobile();
+
   return (
     <Link href={`/blog/${blog.id}`}>
-      <article className="w-full relative mb-5">
+      <article className="w-full relative md:mb-5">
         <div className="w-full aspect-video relative">
           <ViewTransition name={`image-${blog.id}`}>
             <Image
@@ -32,10 +38,15 @@ const FeaturedBlog = ({ blog }: Props) => {
           </ViewTransition>
         </div>
         <div className="hidden md:block md:absolute md:inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent z-10" />
-        <div className="md:absolute bottom-5 left-5 items-center justify-center right-5 mt-2 md:mt-0 space-y-1 z-20">
-          <ViewTransition name={`rating-${blog.id}`}>
-            <StarRating rating={blog.rating} className="hidden md:flex" />
-          </ViewTransition>
+        <div
+          className="md:absolute bottom-5 left-5 items-center justify-center right-5 mt-2 md:mt-0 space-y-1 z-20"
+          suppressHydrationWarning
+        >
+          {!isMobile && (
+            <ViewTransition name={`rating-${blog.id}`}>
+              <StarRating rating={blog.rating} />
+            </ViewTransition>
+          )}
           <ViewTransition name={`title-${blog.id}`}>
             <h2 className="lg:text-3xl text-xl font-bold lg:max-w-4xl lg:mb-3 font-noto-serif-display w-[90%] lg:w-full line-clamp-2 wrap-break-word md:mb-2">
               {blog.title}
@@ -75,6 +86,15 @@ const FeaturedBlog = ({ blog }: Props) => {
               ))}
             </div>
           </ViewTransition>
+          {isMobile && (
+            <ViewTransition name={`rating-${blog.id}`}>
+              <StarRating
+                rating={blog.rating}
+                variant="compact"
+                className="mt-2"
+              />
+            </ViewTransition>
+          )}
         </div>
       </article>
     </Link>
