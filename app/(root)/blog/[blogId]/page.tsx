@@ -1,10 +1,9 @@
-import { DEFAULT_REVALIDATE_SECONDS } from "@/constants";
 import { getBaseUrl, getDirectusAssetUrl, getFullName } from "@/lib/utils";
 import { caller, HydrateClient, prefetch, trpc } from "@/trpc/server";
 import BlogDetailsView from "@/views/BlogDetailsView";
 import type { Metadata } from "next";
 
-export const revalidate = DEFAULT_REVALIDATE_SECONDS;
+export const revalidate = 3600;
 
 type Props = Readonly<{
   params: Promise<{ blogId: string }>;
@@ -51,7 +50,6 @@ export const generateMetadata = async ({
     };
   }
 };
-
 
 export const generateStaticParams = async () => {
   const params = await caller.metadata.getStaticParams();

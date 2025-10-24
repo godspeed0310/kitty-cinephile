@@ -1,9 +1,8 @@
-import { DEFAULT_REVALIDATE_SECONDS } from "@/constants";
 import { getBaseUrl } from "@/lib/utils";
 import { caller } from "@/trpc/server";
 import { MetadataRoute } from "next";
 
-export const revalidate = DEFAULT_REVALIDATE_SECONDS;
+export const revalidate = 3600;
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
   const baseUrl = getBaseUrl();
