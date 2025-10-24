@@ -19,17 +19,35 @@ const fields = [
 ] as const;
 
 export const blogsRouter = createTRPCRouter({
-  getAll: baseProcedure.query(async ({ ctx }) => {
-    return await ctx.directus
-      .request(
-        readItems("blogs", {
-          filter: { status: { _eq: "published" } },
-          fields: fields.filter((field) => field !== "content"),
-          sort: ["-date_created"],
-        })
-      )
-      .catch((error) => handleError(error));
-  }),
+  getAll: baseProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(20).default(10),
+        cursor: z.number().nonnegative().optional().default(0),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, cursor } = input;
+      const items = await ctx.directus
+        .request(
+          readItems("blogs", {
+            limit: limit + 1,
+            offset: cursor,
+            filter: { status: { _eq: "published" } },
+            fields: fields.filter((field) => field !== "content"),
+            sort: ["-date_created"],
+          })
+        )
+        .catch((error) => handleError(error));
+      const hasMore = items.length > limit;
+      const results = hasMore ? items.slice(0, limit) : items;
+      const nextCursor = hasMore ? cursor + limit : undefined;
+
+      return {
+        items: results,
+        nextCursor,
+      };
+    }),
   getOneById: baseProcedure
     .input(z.object({ blogId: z.uuid() }))
     .query(async ({ ctx, input }) => {

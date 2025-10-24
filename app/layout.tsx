@@ -1,4 +1,5 @@
 import { STATIC_DESCRIPTION, STATIC_TITLE } from "@/constants/metadata";
+import { TRPCReactProvider } from "@/trpc/client";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Fleur_De_Leah, Inter, Noto_Serif_Display } from "next/font/google";
@@ -38,7 +39,9 @@ export const RootLayout = ({
       <body
         className={` ${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
       >
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
+        <ThemeProvider attribute="class">
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

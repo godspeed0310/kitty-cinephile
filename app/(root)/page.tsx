@@ -1,21 +1,23 @@
-import BlogCard from "@/components/BlogCard";
-import FeaturedBlog from "@/components/FeaturedBlog";
-import { caller } from "@/trpc/server";
+import { DEFAULT_FETCH_LIMIT } from "@/constants/trpc";
+import { HydrateClient, prefetch, trpc } from "@/trpc/server";
+import HomeView from "@/views/HomeView";
 
 export const revalidate = 3600;
 
 const Home = async () => {
-  const [featured, ...rest] = await caller.blogs.getAll();
+  void prefetch(
+    trpc.blogs.getAll.infiniteQueryOptions(
+      { limit: DEFAULT_FETCH_LIMIT },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    )
+  );
 
   return (
-    <main className="flex flex-col gap-5">
-      <FeaturedBlog blog={featured} />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {rest.map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
-        ))}
-      </div>
-    </main>
+    <HydrateClient>
+      <HomeView />
+    </HydrateClient>
   );
 };
 
