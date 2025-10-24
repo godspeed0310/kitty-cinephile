@@ -1,3 +1,4 @@
+import VercelTrackers from "@/components/VercelTrackers";
 import { STATIC_DESCRIPTION, STATIC_TITLE } from "@/constants/metadata";
 import { TRPCReactProvider } from "@/trpc/client";
 import type { Metadata } from "next";
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   description: STATIC_DESCRIPTION,
 };
 
-export const RootLayout = ({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -40,7 +41,9 @@ export const RootLayout = ({
         className={` ${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
       >
         <ThemeProvider attribute="class">
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <VercelTrackers>{children}</VercelTrackers>
+          </TRPCReactProvider>
         </ThemeProvider>
       </body>
     </html>

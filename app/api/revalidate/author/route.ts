@@ -9,7 +9,7 @@ const PayloadSchema = z.object({
   collection: z.literal("directus_users"),
 });
 
-export const handler = async (req: Request) => {
+const handler = async (req: Request) => {
   const SIGNING_SECRET = serverEnv.DIRECTUS_WEBHOOK_SECRET;
   const incomingSecret = req.headers.get("x-directus-secret");
   const rawBody = await req.json();
@@ -48,3 +48,4 @@ export const handler = async (req: Request) => {
 };
 
 export { handler as POST };
+
