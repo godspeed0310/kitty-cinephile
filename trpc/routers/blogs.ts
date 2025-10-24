@@ -13,6 +13,7 @@ const fields = [
   "summary",
   "id",
   "status",
+  "rating",
   {
     user_created: ["first_name", "last_name", "email", "avatar", "description"],
   },

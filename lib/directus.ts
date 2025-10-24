@@ -25,6 +25,7 @@ type DirectusSchema = {
     featured_image: string;
     summary: string;
     content: string;
+    rating: number;
   }[];
 };
 

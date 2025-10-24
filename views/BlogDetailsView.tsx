@@ -1,5 +1,6 @@
 "use client";
 
+import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/UserAvatar";
 import { sanitizeContent } from "@/lib/sanitize";
@@ -59,6 +60,9 @@ const BlogDetailsView = ({ blogId }: Props) => {
                 </Badge>
               ))}
             </div>
+          </ViewTransition>
+          <ViewTransition name={`rating-${details.id}`}>
+            <StarRating rating={details.rating} className="mt-3" />
           </ViewTransition>
           <div className="flex flex-col md:flex-row gap-x-5 py-5">
             <div className="border-r border-none shrink-0 md:border-solid border-muted-foreground flex flex-col justify-center">

@@ -1,3 +1,4 @@
+import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
 import { getDirectusAssetUrl } from "@/lib/utils";
 import { Blog } from "@/types/Blog";
@@ -40,6 +41,13 @@ const BlogCard = ({ blog }: Props) => {
               </Badge>
             ))}
           </div>
+        </ViewTransition>
+        <ViewTransition name={`rating-${blog.id}`}>
+          <StarRating
+            variant="compact"
+            rating={blog.rating}
+            className="hidden md:flex mt-1"
+          />
         </ViewTransition>
       </article>
     </Link>
