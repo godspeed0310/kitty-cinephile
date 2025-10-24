@@ -10,7 +10,7 @@ type Props = Readonly<{
 
 const Error = ({ error, reset }: Props) => {
   return (
-    <main className="h-screen w-full flex flex-col space-y-4 items-center justify-center text-center">
+    <main className="h-screen w-full px-5 flex flex-col space-y-4 items-center justify-center text-center">
       <Image src="/error.svg" alt="Error" width={120} height={120} />
       <h2 className="text-3xl font-noto-serif-display max-w-md font-bold">
         Cat-tastrophic Error! A Feline Found the Keyboard

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const NotFound = () => {
   return (
-    <main className="h-screen w-full flex flex-col space-y-4 items-center justify-center text-center">
+    <main className="h-screen w-full px-5 flex flex-col space-y-4 items-center justify-center text-center">
       <Image src="/notfound.svg" alt="Not Found" width={120} height={120} />
       <h1 className="text-6xl font-bold">404</h1>
       <h2 className="text-xl font-semibold font-noto-serif-display">
