@@ -25,8 +25,23 @@ export const handleError = (error: unknown) => {
   }
 };
 
-export const getDirectusAssetUrl = (assetId: string) => {
-  return `${clientEnv.NEXT_PUBLIC_DIRECTUS_URL}/assets/${assetId}`;
+type DirectusAssetUrlParams = {
+  assetId: string;
+  height: number;
+  width: number;
+};
+
+export const getDirectusAssetUrl = ({
+  assetId,
+  height,
+  width,
+}: DirectusAssetUrlParams) => {
+  const baseUrl = `${clientEnv.NEXT_PUBLIC_DIRECTUS_URL}/assets/${assetId}`;
+  const params = new URLSearchParams();
+  if (height) params.append("height", height.toString());
+  if (width) params.append("width", width.toString());
+
+  return `${baseUrl}?${params.toString()}`;
 };
 
 export const getFullName = (user: {

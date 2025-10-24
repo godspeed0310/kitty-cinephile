@@ -21,9 +21,22 @@ type Props = Readonly<{
   VariantProps<typeof avatarVariants>;
 
 const UserAvatar = ({ imageId, name, size = "default" }: Props) => {
+
+  const avatarSize = size === "lg" ? 63 : 50;
+
   return (
     <Avatar className={avatarVariants({ size })}>
-      {imageId && <AvatarImage src={getDirectusAssetUrl(imageId)} alt={name} />}
+      {imageId && (
+        <AvatarImage
+          src={getDirectusAssetUrl({
+            assetId: imageId,
+            width: avatarSize * 2,
+            height: avatarSize * 2,
+          })}
+          alt={name}
+          sizes={size === "lg" ? "63px" : "50px"}
+        />
+      )}
       <AvatarFallback className="font-bold font-noto-serif-display">
         {getInitials(name)}
       </AvatarFallback>

@@ -3,8 +3,9 @@
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/UserAvatar";
+import { directusImageLoader } from "@/lib/directusImageLoader";
 import { sanitizeContent } from "@/lib/sanitize";
-import { formatDate, getDirectusAssetUrl, getFullName } from "@/lib/utils";
+import { formatDate, getFullName } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -32,10 +33,12 @@ const BlogDetailsView = ({ blogId }: Props) => {
       <div className="relative w-full aspect-video">
         <ViewTransition name={`image-${details.id}`}>
           <Image
-            src={getDirectusAssetUrl(details.featured_image)}
+            src={details.featured_image}
+            loader={directusImageLoader}
             alt={details.title}
             fill
             className="object-cover"
+            sizes="100vw"
             priority
             fetchPriority="high"
           />

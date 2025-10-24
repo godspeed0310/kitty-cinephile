@@ -1,6 +1,6 @@
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
-import { getDirectusAssetUrl } from "@/lib/utils";
+import { directusImageLoader } from "@/lib/directusImageLoader";
 import { Blog } from "@/types/Blog";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,11 +17,12 @@ const BlogCard = ({ blog }: Props) => {
         <div className="w-full aspect-video relative">
           <ViewTransition name={`image-${blog.id}`}>
             <Image
-              src={getDirectusAssetUrl(blog.featured_image)}
+              src={blog.featured_image}
+              loader={directusImageLoader}
               alt={blog.title}
-              width={500}
-              height={281.25}
+              fill
               className="aspect-video"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               loading="lazy"
               fetchPriority="low"
             />

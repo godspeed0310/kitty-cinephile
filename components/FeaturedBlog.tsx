@@ -1,6 +1,7 @@
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
-import { formatDate, getDirectusAssetUrl, getFullName } from "@/lib/utils";
+import { directusImageLoader } from "@/lib/directusImageLoader";
+import { formatDate, getFullName } from "@/lib/utils";
 import { Blog } from "@/types/Blog";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,10 +20,11 @@ const FeaturedBlog = ({ blog }: Props) => {
         <div className="w-full aspect-video relative">
           <ViewTransition name={`image-${blog.id}`}>
             <Image
-              src={getDirectusAssetUrl(blog.featured_image)}
+              src={blog.featured_image}
+              loader={directusImageLoader}
               alt={blog.title}
-              width={1200}
-              height={675}
+              fill
+              sizes="100vw"
               className="w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"

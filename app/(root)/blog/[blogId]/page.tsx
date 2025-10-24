@@ -30,13 +30,21 @@ export const generateMetadata = async ({
         publishedTime: blog.date_created,
         modifiedTime: blog.date_updated,
         authors: [authorName],
-        images: getDirectusAssetUrl(blog.featured_image),
+        images: getDirectusAssetUrl({
+          assetId: blog.featured_image,
+          width: 1200,
+          height: 630,
+        }),
       },
       twitter: {
         card: "summary_large_image",
         title: blog.title,
         description: blog.summary,
-        images: getDirectusAssetUrl(blog.featured_image),
+        images: getDirectusAssetUrl({
+          assetId: blog.featured_image,
+          width: 1200,
+          height: 630,
+        }),
       },
       alternates: {
         canonical: `${baseUrl}/blog/${blogId}`,
