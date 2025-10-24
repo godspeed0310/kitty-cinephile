@@ -66,9 +66,11 @@ const BlogDetailsView = ({ blogId }: Props) => {
           </ViewTransition>
           <div className="flex flex-col md:flex-row gap-x-5 py-5">
             <div className="border-r border-none shrink-0 md:border-solid border-muted-foreground flex flex-col justify-center">
-              <p className="pr-5 text-muted-foreground text-sm">
-                {formattedDate}
-              </p>
+              <ViewTransition name={`date-${details.id}`}>
+                <p className="pr-5 text-muted-foreground text-sm">
+                  {formattedDate}
+                </p>
+              </ViewTransition>
               <p className="pr-5 text-muted-foreground text-sm">{time}</p>
             </div>
             <ViewTransition name={`summary-${details.id}`}>
@@ -98,7 +100,9 @@ const BlogDetailsView = ({ blogId }: Props) => {
               size="lg"
             />
             <div className="flex-1 flex flex-col items-start justify-center">
-              <h3 className="font-bold">{fullName}</h3>
+              <ViewTransition name={`author-${details.id}`}>
+                <h3 className="font-bold">{fullName}</h3>
+              </ViewTransition>
               <p className="text-xs text-muted-foreground">
                 {details.user_created.description ??
                   "No description available."}

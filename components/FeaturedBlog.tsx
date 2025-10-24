@@ -48,11 +48,15 @@ const FeaturedBlog = ({ blog }: Props) => {
             <div className="flex flex-row gap-10 ml-auto">
               <div className="hidden md:flex flex-col items-start text-sm justify-start border-l border-foreground pl-2">
                 <h3>Written by</h3>
-                <p className="font-bold">{fullName}</p>
+                <ViewTransition name={`author-${blog.id}`}>
+                  <p className="font-bold">{fullName}</p>
+                </ViewTransition>
               </div>
               <div className="hidden md:flex flex-col items-start text-sm justify-start border-l border-foreground pl-2">
                 <h3>Published on</h3>
-                <p className="font-bold">{publishedDate}</p>
+                <ViewTransition name={`date-${blog.id}`}>
+                  <p className="font-bold">{publishedDate}</p>
+                </ViewTransition>
               </div>
             </div>
           </div>
