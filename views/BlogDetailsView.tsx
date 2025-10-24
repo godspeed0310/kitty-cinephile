@@ -7,6 +7,7 @@ import { formatDate, getDirectusAssetUrl, getFullName } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { ViewTransition } from "react";
 import readingTime from "reading-time";
 
 type Props = Readonly<{
@@ -28,27 +29,37 @@ const BlogDetailsView = ({ blogId }: Props) => {
   return (
     <main>
       <div className="relative w-full aspect-video">
-        <Image
-          src={getDirectusAssetUrl(details.featured_image)}
-          alt={details.title}
-          fill
-          className="object-cover"
-          priority
-          fetchPriority="high"
-        />
+        <ViewTransition name={`image-${details.id}`}>
+          <Image
+            src={getDirectusAssetUrl(details.featured_image)}
+            alt={details.title}
+            fill
+            className="object-cover"
+            priority
+            fetchPriority="high"
+          />
+        </ViewTransition>
       </div>
       <div className="w-full flex flex-col-reverse md:flex-row gap-3 mt-3">
         <div className="md:flex-1 flex flex-col">
-          <h1 className="text-3xl font-bold font-noto-serif-display wrap-break-word">
-            {details.title}
-          </h1>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {details.categories.map((category) => (
-              <Badge className="rounded-full" variant="outline" key={category}>
-                {category}
-              </Badge>
-            ))}
-          </div>
+          <ViewTransition name={`title-${details.id}`}>
+            <h1 className="text-3xl font-bold font-noto-serif-display wrap-break-word">
+              {details.title}
+            </h1>
+          </ViewTransition>
+          <ViewTransition name={`category-${details.id}`}>
+            <div className="flex flex-wrap gap-2 mt-4">
+              {details.categories.map((category) => (
+                <Badge
+                  key={category}
+                  className="rounded-full"
+                  variant="outline"
+                >
+                  {category}
+                </Badge>
+              ))}
+            </div>
+          </ViewTransition>
           <div className="flex flex-col md:flex-row gap-x-5 py-5">
             <div className="border-r border-none shrink-0 md:border-solid border-muted-foreground flex flex-col justify-center">
               <p className="pr-5 text-muted-foreground text-sm">
@@ -56,9 +67,11 @@ const BlogDetailsView = ({ blogId }: Props) => {
               </p>
               <p className="pr-5 text-muted-foreground text-sm">{time}</p>
             </div>
-            <h2 className="text-sm mt-3 text-muted-foreground">
-              {details.summary}
-            </h2>
+            <ViewTransition name={`summary-${details.id}`}>
+              <h2 className="text-sm mt-3 text-muted-foreground">
+                {details.summary}
+              </h2>
+            </ViewTransition>
           </div>
           <div className="flex md:hidden flex-row gap-3 mb-5 items-center">
             <UserAvatar imageId={user.avatar} name={getFullName(user)} />

@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   experimental: {
     useLightningcss: true,
     typedEnv: true,
+    viewTransition: true,
   },
   images: {
     remotePatterns: [
