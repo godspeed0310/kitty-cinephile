@@ -40,6 +40,7 @@ export const getDirectusAssetUrl = ({
   const params = new URLSearchParams();
   if (height) params.append("height", height.toString());
   if (width) params.append("width", width.toString());
+  params.append("format", "webp");
 
   return `${baseUrl}?${params.toString()}`;
 };

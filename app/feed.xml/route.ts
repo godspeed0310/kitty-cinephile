@@ -1,5 +1,5 @@
 import { STATIC_DESCRIPTION, STATIC_TITLE } from "@/constants/metadata";
-import { getBaseUrl, getFullName } from "@/lib/utils";
+import { getBaseUrl, getDirectusAssetUrl, getFullName } from "@/lib/utils";
 import { caller } from "@/trpc/server";
 import RSS from "rss";
 
@@ -29,6 +29,14 @@ const handler = async () => {
       custom_elements: [{ "content:encoded": `<![CDATA[${blog.content}]]>` }],
       categories: blog.categories,
       author: getFullName(blog.user_created),
+      enclosure: {
+        url: getDirectusAssetUrl({
+          assetId: blog.featured_image,
+          width: 1200,
+          height: 630,
+        }),
+        type: "image/webp",
+      },
     });
   });
 
@@ -42,3 +50,4 @@ const handler = async () => {
 };
 
 export { handler as GET };
+

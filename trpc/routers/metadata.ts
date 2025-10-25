@@ -46,6 +46,7 @@ export const metadataRouter = createTRPCRouter({
             "date_created",
             "content",
             "categories",
+            "featured_image",
             {
               user_created: ["first_name", "last_name"],
             },
