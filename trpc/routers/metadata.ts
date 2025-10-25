@@ -35,4 +35,25 @@ export const metadataRouter = createTRPCRouter({
         )
         .catch((error) => handleError(error));
     }),
+  getRssPosts: baseProcedure.query(async ({ ctx }) => {
+    return await ctx.directus
+      .request(
+        readItems("blogs", {
+          fields: [
+            "title",
+            "summary",
+            "id",
+            "date_created",
+            "content",
+            "categories",
+            {
+              user_created: ["first_name", "last_name"],
+            },
+          ],
+          filter: { status: { _eq: "published" } },
+          sort: ["-date_created"],
+        })
+      )
+      .catch((error) => handleError(error));
+  }),
 });

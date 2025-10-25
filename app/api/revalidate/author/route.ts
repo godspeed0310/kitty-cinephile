@@ -22,6 +22,7 @@ const handler = async (req: Request) => {
   } else {
     const { keys: authorIds } = validationResult.data;
     const homePath = "/";
+    const rssFeedPath = "/feed.xml";
     const blogsFromAuthors = await Promise.all(
       authorIds.map(async (authorId) =>
         caller.webhooks.getAuthorRevalidationPaths({ authorId })
@@ -36,11 +37,12 @@ const handler = async (req: Request) => {
       revalidatePath(path);
       return path;
     });
+    revalidatePath(rssFeedPath);
 
     return NextResponse.json({
       revalidated: true,
       authors: authorIds,
-      paths: [homePath, ...revalidatedPaths],
+      paths: [homePath, ...revalidatedPaths, rssFeedPath],
       blogCount: blogIds.length,
       now: Date.now(),
     });

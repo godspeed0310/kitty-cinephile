@@ -21,17 +21,20 @@ const handler = async (req: Request) => {
   } else {
     const { keys } = validationResult.data;
     const homePath = "/";
+    const rssFeedPath = "/feed.xml";
     const blogPaths = keys.map((key) => `/blog/${key}`);
 
     revalidatePath(homePath);
     blogPaths.forEach((path) => revalidatePath(path));
+    revalidatePath(rssFeedPath);
 
     return NextResponse.json({
       revalidated: true,
-      paths: [homePath, ...blogPaths],
+      paths: [homePath, ...blogPaths, rssFeedPath],
       now: Date.now(),
     });
   }
 };
 
 export { handler as POST };
+
