@@ -37,6 +37,13 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="86098e2f-95f0-4c88-b9b1-8882dd3e8258"
+        />
+      </head>
       <body
         className={` ${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
       >
