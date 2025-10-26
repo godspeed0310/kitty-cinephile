@@ -11,8 +11,15 @@ type DirectusUser = {
   description: string | null;
 };
 
+type DirectusNewsletterSubscription = {
+  id: string;
+  email: string;
+  tags: Array<string>;
+};
+
 type DirectusSchema = {
   directus_users: Array<DirectusUser>;
+  newsletter_subscriptions: Array<DirectusNewsletterSubscription>;
   blogs: {
     id: string;
     status: "draft" | "published" | "archived";

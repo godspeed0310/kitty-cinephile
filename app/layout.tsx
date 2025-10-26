@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "@/trpc/client";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Fleur_De_Leah, Inter, Noto_Serif_Display } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inter = Inter({
@@ -51,7 +52,10 @@ const RootLayout = ({
       >
         <ThemeProvider attribute="class">
           <TRPCReactProvider>
-            <VercelTrackers>{children}</VercelTrackers>
+            <VercelTrackers>
+              <Toaster richColors duration={2000} />
+              {children}
+            </VercelTrackers>
           </TRPCReactProvider>
         </ThemeProvider>
       </body>

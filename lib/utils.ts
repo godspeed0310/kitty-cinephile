@@ -16,6 +16,12 @@ export const handleError = (error: unknown) => {
       message: error.message,
       cause: error,
     });
+  } else if (error instanceof TRPCError) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: error.message,
+      cause: error,
+    });
   } else {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",

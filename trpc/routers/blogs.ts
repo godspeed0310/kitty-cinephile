@@ -15,7 +15,14 @@ const fields = [
   "status",
   "rating",
   {
-    user_created: ["first_name", "last_name", "email", "avatar", "description"],
+    user_created: [
+      "id",
+      "first_name",
+      "last_name",
+      "email",
+      "avatar",
+      "description",
+    ],
   },
 ] as const;
 
