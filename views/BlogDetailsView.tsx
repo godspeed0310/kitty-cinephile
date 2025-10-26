@@ -1,5 +1,6 @@
 "use client";
 
+import AuthorSubscriptionForm from "@/components/AuthorSubscriptionForm";
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/UserAvatar";
@@ -92,9 +93,10 @@ const BlogDetailsView = ({ blogId }: Props) => {
               </p>
             </div>
           </div>
+          <AuthorSubscriptionForm author={user} className="md:hidden" />
           <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         </div>
-        <div className="h-min border-l border-muted pl-5 py-5 space-y-3 hidden md:block md:w-[30%] xl:w-1/5">
+        <div className="h-min border-l border-muted pl-5 py-5 space-y-3 hidden md:block md:w-[30%] xl:w-1/5 sticky top-5">
           <h2 className="font-bold text-xl">About the Author</h2>
           <div className="flex flex-row items-center gap-x-5">
             <UserAvatar
@@ -112,6 +114,7 @@ const BlogDetailsView = ({ blogId }: Props) => {
               </p>
             </div>
           </div>
+          <AuthorSubscriptionForm author={user} />
         </div>
       </div>
     </main>

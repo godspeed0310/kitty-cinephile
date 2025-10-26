@@ -18,7 +18,7 @@ const FeaturedBlog = ({ blog }: Props) => {
 
   return (
     <Link href={`/blog/${blog.id}`}>
-      <article className="w-full relative md:mb-5">
+      <article className="w-full relative">
         <div className="w-full aspect-video relative">
           <ViewTransition name={`image-${blog.id}`}>
             <Image
