@@ -10,6 +10,8 @@ export const serverEnv = createEnv({
       .optional()
       .transform((url) => (url ? `https://${url}` : undefined))
       .pipe(z.url().optional()),
+    UPSTASH_REDIS_REST_URL: z.url(),
+    UPSTASH_REDIS_REST_TOKEN: z.string(),
   },
   experimental__runtimeEnv: true,
   emptyStringAsUndefined: true,

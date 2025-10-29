@@ -1,3 +1,4 @@
+import { followRateLimit, subscribeRateLimit } from "@/lib/upstash";
 import { handleError } from "@/lib/utils";
 import { baseProcedure, createTRPCRouter } from "@/trpc";
 import { createItem, readItems, updateItem } from "@directus/sdk";
@@ -14,6 +15,21 @@ export const newsletterRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { email } = input;
       try {
+        const emailRatelimit = subscribeRateLimit.limit(email);
+        const ipRatelimit = subscribeRateLimit.limit(ctx.ip);
+
+        const [emailLimit, ipLimit] = await Promise.all([
+          emailRatelimit,
+          ipRatelimit,
+        ]);
+
+        if (!emailLimit.success || !ipLimit.success) {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "Rate limit exceeded. Please try again later.",
+          });
+        }
+
         const [existingSubscription] = await ctx.directus.request(
           readItems("newsletter_subscriptions", {
             fields: ["tags", "id"],
@@ -48,6 +64,7 @@ export const newsletterRouter = createTRPCRouter({
         return handleError(error);
       }
     }),
+
   addAuthorSubscription: baseProcedure
     .input(
       z.object({
@@ -58,6 +75,21 @@ export const newsletterRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { email, authorId } = input;
       try {
+        const emailRatelimit = followRateLimit.limit(email);
+        const ipRatelimit = followRateLimit.limit(ctx.ip);
+
+        const [emailLimit, ipLimit] = await Promise.all([
+          emailRatelimit,
+          ipRatelimit,
+        ]);
+
+        if (!emailLimit.success || !ipLimit.success) {
+          throw new TRPCError({
+            code: "TOO_MANY_REQUESTS",
+            message: "Rate limit exceeded. Please try again later.",
+          });
+        }
+
         const [existingSubscription] = await ctx.directus.request(
           readItems("newsletter_subscriptions", {
             fields: ["tags", "id"],
