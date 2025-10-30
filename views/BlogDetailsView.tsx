@@ -78,7 +78,7 @@ const BlogDetailsView = ({ blogId }: Props) => {
               <p className="pr-5 text-muted-foreground text-sm">{time}</p>
             </div>
             <ViewTransition name={`summary-${details.id}`}>
-              <h2 className="text-sm mt-3 text-muted-foreground">
+              <h2 className="text-sm mt-3 md:mt-0 text-muted-foreground">
                 {details.summary}
               </h2>
             </ViewTransition>
