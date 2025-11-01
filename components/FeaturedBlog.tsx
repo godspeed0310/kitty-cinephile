@@ -1,20 +1,28 @@
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { directusImageLoader } from "@/lib/directusImageLoader";
 import { formatDate, getFullName } from "@/lib/utils";
 import { Blog } from "@/types/Blog";
 import Image from "next/image";
 import Link from "next/link";
-import { ViewTransition } from "react";
+import { useMemo, ViewTransition } from "react";
 
 type Props = Readonly<{
   blog: Blog;
 }>;
 
 const FeaturedBlog = ({ blog }: Props) => {
-  const fullName = getFullName(blog.user_created);
-  const publishedDate = formatDate(blog.date_created);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const isMobile = useIsMobile();
+
+  const fullName = useMemo(
+    () => getFullName(blog.user_created),
+    [blog.user_created]
+  );
+  const publishedDate = useMemo(
+    () => formatDate(blog.date_created),
+    [blog.date_created]
+  );
 
   return (
     <Link href={`/blog/${blog.id}`}>
@@ -26,10 +34,10 @@ const FeaturedBlog = ({ blog }: Props) => {
               loader={directusImageLoader}
               alt={blog.title}
               fill
-              sizes="100vw"
               className="w-full h-full object-cover"
               loading="eager"
               fetchPriority="high"
+              quality={85}
             />
           </ViewTransition>
         </div>

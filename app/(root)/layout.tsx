@@ -7,7 +7,7 @@ type Props = Readonly<{
 
 const BlogLayout = ({ children }: Props) => {
   return (
-    <main className="space-y-5 p-5 flex flex-col max-w-7xl mx-auto px-5">
+    <main className="space-y-5 p-5 flex flex-col max-w-7xl mx-auto">
       <BrandHeader />
       {children}
     </main>

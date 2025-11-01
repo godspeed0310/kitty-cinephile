@@ -11,6 +11,7 @@ export const directusImageLoader = ({
 
   params.set("width", width.toString());
   params.set("format", "webp");
+  params.set("fit", "cover");
   if (quality) {
     params.set("quality", quality.toString());
   }

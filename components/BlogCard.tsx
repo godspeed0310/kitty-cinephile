@@ -22,9 +22,9 @@ const BlogCard = ({ blog }: Props) => {
               alt={blog.title}
               fill
               className="aspect-video"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               loading="lazy"
               fetchPriority="low"
+              quality={75}
             />
           </ViewTransition>
         </div>

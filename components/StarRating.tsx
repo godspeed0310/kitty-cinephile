@@ -14,7 +14,7 @@ const StarRating = ({ rating, className, variant = "default" }: Props) => {
 
   return (
     <div
-      className={cn("flex flex-row gap-1 items-center mb-2", className)}
+      className={cn("flex gap-1 items-center mb-2", className)}
       aria-label={`Rating: ${rating} out of 5`}
       role="img"
     >

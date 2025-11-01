@@ -63,7 +63,7 @@ const NewsletterForm = () => {
               height={120}
             />
           </div>
-          <div className="flex flex-col lg:flex-row items-start flex-1 justify-between">
+          <div className="flex flex-col lg:flex-row flex-1 justify-between">
             <div className="flex flex-col">
               <h1 className="text-2xl font-bold font-noto-serif-display">
                 The Great Cat-sby: Weekly Edition
@@ -73,7 +73,7 @@ const NewsletterForm = () => {
                 straight to you. It&apos;s the plot twist your inbox needs.
               </p>
             </div>
-            <div className="flex flex-col items-stretch md:items-start w-full md:max-w-sm xl:max-w-sm">
+            <div className="flex flex-col w-full md:max-w-sm xl:max-w-sm">
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col md:flex-row gap-2 mt-3 w-full max-w-88"

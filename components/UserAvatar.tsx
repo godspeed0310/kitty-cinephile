@@ -34,7 +34,6 @@ const UserAvatar = ({ imageId, name, size = "default" }: Props) => {
             height: avatarSize * 2,
           })}
           alt={name}
-          sizes={size === "lg" ? "63px" : "50px"}
         />
       )}
       <AvatarFallback className="font-bold font-noto-serif-display">

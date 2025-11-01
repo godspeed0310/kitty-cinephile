@@ -74,7 +74,7 @@ const AuthorSubscriptionForm = ({ author, className }: Props) => {
         Follow this author to receive updates directly to your inbox!
       </p>
       <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="w-full mt-3 flex-1 items-center flex flex-col justify-center">
+        <div className="w-full mt-3 flex-1 flex flex-col items-center justify-center">
           <FieldGroup>
             <Controller
               name="email"

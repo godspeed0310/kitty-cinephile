@@ -10,7 +10,7 @@ import { formatDate, getFullName } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { ViewTransition } from "react";
+import { useMemo, ViewTransition } from "react";
 import readingTime from "reading-time";
 
 type Props = Readonly<{
@@ -24,10 +24,19 @@ const BlogDetailsView = ({ blogId }: Props) => {
   );
 
   const user = details.user_created;
-  const fullName = getFullName(user);
-  const formattedDate = formatDate(details.date_created);
-  const { text: time } = readingTime(details.content);
-  const sanitizedContent = sanitizeContent(details.content);
+  const fullName = useMemo(() => getFullName(user), [user]);
+  const formattedDate = useMemo(
+    () => formatDate(details.date_created),
+    [details.date_created]
+  );
+  const time = useMemo(
+    () => readingTime(details.content).text,
+    [details.content]
+  );
+  const sanitizedContent = useMemo(
+    () => sanitizeContent(details.content),
+    [details.content]
+  );
 
   return (
     <main>
@@ -39,9 +48,9 @@ const BlogDetailsView = ({ blogId }: Props) => {
             alt={details.title}
             fill
             className="object-cover"
-            sizes="100vw"
             priority
             fetchPriority="high"
+            quality={85}
           />
         </ViewTransition>
       </div>
@@ -69,13 +78,13 @@ const BlogDetailsView = ({ blogId }: Props) => {
             <StarRating rating={details.rating} className="mt-3" />
           </ViewTransition>
           <div className="flex flex-col md:flex-row gap-x-5 py-5">
-            <div className="border-r border-none shrink-0 md:border-solid border-muted-foreground flex flex-col justify-center">
+            <div className="shrink-0 md:border-r md:border-muted-foreground flex flex-col justify-center">
               <ViewTransition name={`date-${details.id}`}>
-                <p className="pr-5 text-muted-foreground text-sm">
+                <p className="md:pr-5 text-muted-foreground text-sm">
                   {formattedDate}
                 </p>
               </ViewTransition>
-              <p className="pr-5 text-muted-foreground text-sm">{time}</p>
+              <p className="md:pr-5 text-muted-foreground text-sm">{time}</p>
             </div>
             <ViewTransition name={`summary-${details.id}`}>
               <h2 className="text-sm mt-3 md:mt-0 text-muted-foreground">
@@ -83,9 +92,9 @@ const BlogDetailsView = ({ blogId }: Props) => {
               </h2>
             </ViewTransition>
           </div>
-          <div className="flex md:hidden flex-row gap-3 mb-5 items-center">
+          <div className="flex md:hidden gap-3 mb-5 items-center">
             <UserAvatar imageId={user.avatar} name={getFullName(user)} />
-            <div className="flex-1 flex flex-col items-start justify-center">
+            <div className="flex-1 flex flex-col justify-center">
               <h3 className="font-bold">{fullName}</h3>
               <p className="text-xs text-muted-foreground">
                 {details.user_created.description ??
@@ -96,15 +105,15 @@ const BlogDetailsView = ({ blogId }: Props) => {
           <AuthorSubscriptionForm author={user} className="md:hidden" />
           <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
         </div>
-        <div className="h-min border-l border-muted pl-5 py-5 space-y-3 hidden md:block md:w-[30%] xl:w-1/5 sticky top-5">
+        <div className="hidden md:block md:w-[30%] xl:w-1/5 sticky top-5 border-l border-muted pl-5 py-5 space-y-3">
           <h2 className="font-bold text-xl">About the Author</h2>
-          <div className="flex flex-row items-center gap-x-5">
+          <div className="flex items-center gap-x-5">
             <UserAvatar
               imageId={user.avatar}
               name={getFullName(user)}
               size="lg"
             />
-            <div className="flex-1 flex flex-col items-start justify-center">
+            <div className="flex-1 flex flex-col justify-center">
               <ViewTransition name={`author-${details.id}`}>
                 <h3 className="font-bold">{fullName}</h3>
               </ViewTransition>

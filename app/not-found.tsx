@@ -19,7 +19,7 @@ const NotFound = () => {
         href="/"
         replace
         prefetch
-        className={cn(buttonVariants({ variant: "default" }), "cursor-pointer")}
+        className={cn(buttonVariants({ variant: "default" }))}
       >
         Back to Home
       </Link>

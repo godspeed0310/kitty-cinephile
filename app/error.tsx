@@ -20,9 +20,7 @@ const Error = ({ error, reset }: Props) => {
         across the main keys. The damage report is below:{" "}
         <span className="font-bold">{error.message}</span>
       </p>
-      <Button className="cursor-pointer" onClick={() => reset()}>
-        Try Again
-      </Button>
+      <Button onClick={() => reset()}>Try Again</Button>
     </main>
   );
 };

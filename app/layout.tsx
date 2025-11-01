@@ -10,17 +10,23 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+  preload: true,
 });
 
 const notoSerifDisplay = Noto_Serif_Display({
   subsets: ["latin"],
   variable: "--font-noto-serif-display",
+  display: "swap",
+  preload: true,
 });
 
 const fleurDeLeah = Fleur_De_Leah({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-fleur-de-leah",
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -39,16 +45,21 @@ const RootLayout = ({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://directus.thehightable.app" />
+        <link rel="dns-prefetch" href="https://directus.thehightable.app" />
         {process.env.NODE_ENV === "production" && (
-          <script
-            defer
-            src="https://cloud.umami.is/script.js"
-            data-website-id="86098e2f-95f0-4c88-b9b1-8882dd3e8258"
-          />
+          <>
+            <link rel="preconnect" href="https://cloud.umami.is" />
+            <script
+              defer
+              src="https://cloud.umami.is/script.js"
+              data-website-id="86098e2f-95f0-4c88-b9b1-8882dd3e8258"
+            />
+          </>
         )}
       </head>
       <body
-        className={` ${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
+        className={`${inter.variable} ${notoSerifDisplay.variable} ${fleurDeLeah.variable} antialiased`}
       >
         <ThemeProvider attribute="class">
           <TRPCReactProvider>
