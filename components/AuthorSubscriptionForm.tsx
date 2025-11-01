@@ -5,12 +5,15 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useHypertune } from "@/hypertune/hypertune.react";
 import { cn, getFullName } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 import { Author } from "@/types/Author";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Cat } from "lucide-react";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -37,28 +40,43 @@ const AuthorSubscriptionForm = ({ author, className }: Props) => {
   const addAuthorSubscription = useMutation(
     trpc.newsletter.addAuthorSubscription.mutationOptions()
   );
+  const hypertune = useHypertune();
+  const followAuthorEnabled = hypertune.enableNewsletterSignups({
+    fallback: true,
+  });
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (data: NewsletterFormData) => {
-    await addAuthorSubscription.mutateAsync(
-      {
-        email: data.email,
-        authorId: author.id,
-      },
-      {
-        onError: (error) => {
-          toast.error("Unable to follow author", {
-            description: error.message,
-          });
-        },
-        onSuccess: () => {
-          toast.success("Successfully followed author", {
-            description: "You'll be notified of new posts from this author!",
-          });
-          form.reset();
-        },
+    startTransition(async () => {
+      if (!followAuthorEnabled) {
+        toast.error("Following authors is currently disabled.", {
+          description: "Please try again later.",
+        });
+      } else {
+        addAuthorSubscription.mutate(
+          {
+            email: data.email,
+            authorId: author.id,
+          },
+          {
+            onError: (error) => {
+              toast.error("Unable to follow author", {
+                description: error.message,
+              });
+            },
+            onSuccess: () => {
+              toast.success("Successfully followed author", {
+                description:
+                  "You'll be notified of new posts from this author!",
+              });
+              form.reset();
+            },
+          }
+        );
       }
-    );
+    });
   };
+  const formPending = isPending || addAuthorSubscription.isPending;
 
   return (
     <div
@@ -88,7 +106,7 @@ const AuthorSubscriptionForm = ({ author, className }: Props) => {
                     <InputGroupInput
                       {...field}
                       placeholder="m@meow.com"
-                      disabled={addAuthorSubscription.isPending}
+                      disabled={formPending}
                       id={field.name}
                       aria-invalid={fieldState.invalid}
                       autoComplete="email"
@@ -101,7 +119,9 @@ const AuthorSubscriptionForm = ({ author, className }: Props) => {
               )}
             />
           </FieldGroup>
-          <Button className="mt-2 w-full">Follow</Button>
+          <Button disabled={formPending} className="mt-2 w-full">
+            <LoadingSwap isLoading={formPending}>Follow</LoadingSwap>
+          </Button>
         </div>
       </form>
     </div>

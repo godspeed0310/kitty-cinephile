@@ -8,11 +8,14 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useHypertune } from "@/hypertune/hypertune.react";
 import { useTRPC } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Cat } from "lucide-react";
 import Image from "next/image";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
@@ -34,22 +37,37 @@ const NewsletterForm = () => {
   const addSubscription = useMutation(
     trpc.newsletter.addPlatformSubscription.mutationOptions()
   );
+  const hypertune = useHypertune();
+  const newsletterSignupsEnabled = hypertune.enableNewsletterSignups({
+    fallback: false,
+  });
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (data: NewsletterFormData) => {
-    await addSubscription.mutateAsync(data, {
-      onError: (error) => {
-        toast.error("Unable to add subscription", {
-          description: error.message,
+    startTransition(async () => {
+      if (!newsletterSignupsEnabled) {
+        toast.error("Newsletter signups are currently disabled.", {
+          description: "Please try again later.",
         });
-      },
-      onSuccess: () => {
-        toast.success("Added email subscription successfully", {
-          description: "Welcome to the Clowder!",
+      } else {
+        addSubscription.mutate(data, {
+          onError: (error) => {
+            toast.error("Unable to add subscription", {
+              description: error.message,
+            });
+          },
+          onSuccess: () => {
+            toast.success("Added email subscription successfully", {
+              description: "Welcome to the Clowder!",
+            });
+            form.reset();
+          },
         });
-        form.reset();
-      },
+      }
     });
   };
+
+  const formPending = isPending || addSubscription.isPending;
 
   return (
     <Card className="newsletter-gradient p-0.5">
@@ -88,7 +106,7 @@ const NewsletterForm = () => {
                           <InputGroupInput
                             {...field}
                             placeholder="m@meow.com"
-                            disabled={addSubscription.isPending}
+                            disabled={formPending}
                             id={field.name}
                             aria-invalid={fieldState.invalid}
                             autoComplete="email"
@@ -104,7 +122,9 @@ const NewsletterForm = () => {
                     )}
                   />
                 </FieldGroup>
-                <Button className="px-5">Subscribe</Button>
+                <Button disabled={formPending} className="px-5">
+                  <LoadingSwap isLoading={formPending}>Subscribe</LoadingSwap>
+                </Button>
               </form>
               <span className="text-muted-foreground text-xs mt-2 max-w-xs">
                 Only the best reviews and you can unsubscribe anytime. No spam,

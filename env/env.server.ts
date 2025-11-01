@@ -12,6 +12,8 @@ export const serverEnv = createEnv({
       .pipe(z.url().optional()),
     UPSTASH_REDIS_REST_URL: z.url(),
     UPSTASH_REDIS_REST_TOKEN: z.string(),
+    EXPERIMENTATION_CONFIG_ITEM_KEY: z.string(),
+    EXPERIMENTATION_CONFIG: z.url(),
   },
   experimental__runtimeEnv: true,
   emptyStringAsUndefined: true,
