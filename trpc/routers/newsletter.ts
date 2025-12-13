@@ -1,7 +1,7 @@
+import { serverEnv } from "@/env/env.server";
 import { followRateLimit, subscribeRateLimit } from "@/lib/upstash";
 import { handleError } from "@/lib/utils";
 import { baseProcedure, createTRPCRouter } from "@/trpc";
-import { createItem, readItems, updateItem } from "@directus/sdk";
 import { TRPCError } from "@trpc/server";
 import z from "zod";
 
@@ -10,10 +10,15 @@ export const newsletterRouter = createTRPCRouter({
     .input(
       z.object({
         email: z.email(),
+        tag: z.string().default("platform"),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { email } = input;
+      const { email, tag } = input;
+      const timeout = 30000;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+
       try {
         const emailRatelimit = subscribeRateLimit.limit(email);
         const ipRatelimit = subscribeRateLimit.limit(ctx.ip);
@@ -30,37 +35,29 @@ export const newsletterRouter = createTRPCRouter({
           });
         }
 
-        const [existingSubscription] = await ctx.directus.request(
-          readItems("newsletter_subscriptions", {
-            fields: ["tags", "id"],
-            filter: { email: { _eq: email } },
-          })
+        const response = await fetch(
+          serverEnv.DIRECTUS_NEWSLETTER_WEBHOOK_URL,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email,
+              tag: tag,
+            }),
+            signal: controller.signal,
+          }
         );
-        if (
-          existingSubscription &&
-          existingSubscription.tags.includes("platform")
-        ) {
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
           throw new TRPCError({
-            code: "CONFLICT",
-            message: "You are already subscribed to the newsletter.",
+            code: "INTERNAL_SERVER_ERROR",
+            message: response.statusText,
           });
-        } else if (existingSubscription) {
-          const updatedTags = existingSubscription.tags.concat("platform");
-          await ctx.directus.request(
-            updateItem("newsletter_subscriptions", existingSubscription.id, {
-              tags: updatedTags,
-            })
-          );
-        } else {
-          await ctx.directus.request(
-            createItem("newsletter_subscriptions", {
-              email,
-              tags: ["platform"],
-            })
-          );
         }
       } catch (error) {
-        console.log(error);
+        clearTimeout(timeoutId);
         return handleError(error);
       }
     }),
@@ -74,6 +71,9 @@ export const newsletterRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const { email, authorId } = input;
+      const timeout = 30000;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
       try {
         const emailRatelimit = followRateLimit.limit(email);
         const ipRatelimit = followRateLimit.limit(ctx.ip);
@@ -90,36 +90,29 @@ export const newsletterRouter = createTRPCRouter({
           });
         }
 
-        const [existingSubscription] = await ctx.directus.request(
-          readItems("newsletter_subscriptions", {
-            fields: ["tags", "id"],
-            filter: { email: { _eq: email } },
-          })
+        const response = await fetch(
+          serverEnv.DIRECTUS_NEWSLETTER_WEBHOOK_URL,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: email,
+              tag: authorId,
+            }),
+            signal: controller.signal,
+          }
         );
-        if (
-          existingSubscription &&
-          existingSubscription.tags.includes(authorId)
-        ) {
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
           throw new TRPCError({
-            code: "CONFLICT",
-            message: "You are already following this author.",
+            code: "INTERNAL_SERVER_ERROR",
+            message: response.statusText,
           });
-        } else if (existingSubscription) {
-          const updatedTags = existingSubscription.tags.concat(authorId);
-          await ctx.directus.request(
-            updateItem("newsletter_subscriptions", existingSubscription.id, {
-              tags: updatedTags,
-            })
-          );
-        } else {
-          await ctx.directus.request(
-            createItem("newsletter_subscriptions", {
-              email,
-              tags: [authorId],
-            })
-          );
         }
       } catch (error) {
+        clearTimeout(timeoutId);
         return handleError(error);
       }
     }),

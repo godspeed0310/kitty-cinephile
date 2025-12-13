@@ -17,6 +17,8 @@ export const handleError = (error: unknown) => {
       cause: error,
     });
   } else if (error instanceof TRPCError) {
+    throw error;
+  } else if (error instanceof Error) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: error.message,
@@ -74,4 +76,16 @@ export const getInitials = (name: string) => {
 
 export const getBaseUrl = () => {
   return serverEnv.VERCEL_URL ?? "http://localhost:3000";
+};
+
+type FetchWithTimeoutParams = {
+  url: string;
+  options: RequestInit;
+};
+
+export const fetchWithTimeout = async ({
+  options,
+  url,
+}: FetchWithTimeoutParams) => {
+  const response = await fetch(url, options);
 };

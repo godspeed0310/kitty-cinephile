@@ -14,6 +14,7 @@ export const serverEnv = createEnv({
     UPSTASH_REDIS_REST_TOKEN: z.string(),
     EXPERIMENTATION_CONFIG_ITEM_KEY: z.string(),
     EXPERIMENTATION_CONFIG: z.url(),
+    DIRECTUS_NEWSLETTER_WEBHOOK_URL: z.url(),
   },
   experimental__runtimeEnv: true,
   emptyStringAsUndefined: true,

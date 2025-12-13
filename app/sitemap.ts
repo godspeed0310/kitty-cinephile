@@ -26,7 +26,6 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
     return [...baseSitemap, ...blogEntries];
   } catch (error) {
-    console.error("Error generating sitemap:", error);
     return [...baseSitemap];
   }
 };

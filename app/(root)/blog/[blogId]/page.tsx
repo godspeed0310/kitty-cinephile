@@ -51,7 +51,6 @@ export const generateMetadata = async ({
       },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
     return {
       title: "Blog Not Found",
       description: "The requested blog could not be found.",
