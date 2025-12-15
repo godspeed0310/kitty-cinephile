@@ -27,8 +27,18 @@ export const metadataRouter = createTRPCRouter({
               "date_created",
               "date_updated",
               "categories",
+              "rating",
+              "media_type",
               {
                 user_created: ["first_name", "last_name"],
+                metadata: [
+                  "title",
+                  "genres",
+                  "rating",
+                  "release_date",
+                  "runtime",
+                  "external_id",
+                ],
               },
             ],
           })

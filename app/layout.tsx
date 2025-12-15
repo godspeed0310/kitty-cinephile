@@ -48,7 +48,6 @@ const RootLayout = ({
       <html lang="en" suppressHydrationWarning>
         <head>
           <link rel="preconnect" href="https://directus.thehightable.app" />
-          <link rel="dns-prefetch" href="https://directus.thehightable.app" />
           {process.env.NODE_ENV === "production" && (
             <>
               <link rel="preconnect" href="https://cloud.umami.is" />

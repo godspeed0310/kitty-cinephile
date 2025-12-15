@@ -77,15 +77,3 @@ export const getInitials = (name: string) => {
 export const getBaseUrl = () => {
   return serverEnv.VERCEL_URL ?? "http://localhost:3000";
 };
-
-type FetchWithTimeoutParams = {
-  url: string;
-  options: RequestInit;
-};
-
-export const fetchWithTimeout = async ({
-  options,
-  url,
-}: FetchWithTimeoutParams) => {
-  const response = await fetch(url, options);
-};

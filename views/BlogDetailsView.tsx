@@ -1,6 +1,7 @@
 "use client";
 
 import AuthorSubscriptionForm from "@/components/AuthorSubscriptionForm";
+import MetadataCard from "@/components/MetadataCard";
 import StarRating from "@/components/StarRating";
 import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/UserAvatar";
@@ -23,6 +24,36 @@ const BlogDetailsView = ({ blogId }: Props) => {
     trpc.blogs.getOneById.queryOptions({ blogId })
   );
 
+  const jsonLd = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "Review",
+      itemReviewed: {
+        "@type": details.media_type === "movie" ? "Movie" : "TVSeries",
+        name: details.metadata.title,
+        genre: details.metadata.genres,
+        datePublished: details.metadata.release_date,
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: details.metadata.rating,
+          bestRating: 10,
+        },
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: details.rating,
+        bestRating: 5,
+      },
+      author: {
+        "@type": "Person",
+        name: getFullName(details.user_created),
+      },
+      datePublished: details.date_created,
+      reviewBody: details.summary,
+    }),
+    [details]
+  );
+
   const user = details.user_created;
   const fullName = useMemo(() => getFullName(user), [user]);
   const formattedDate = useMemo(
@@ -40,6 +71,10 @@ const BlogDetailsView = ({ blogId }: Props) => {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="relative w-full aspect-video">
         <Image
           src={details.featured_image}
@@ -65,6 +100,10 @@ const BlogDetailsView = ({ blogId }: Props) => {
             ))}
           </div>
           <StarRating rating={details.rating} className="mt-3" />
+          <MetadataCard
+            metadata={details.metadata}
+            mediaType={details.media_type}
+          />
           <div className="flex flex-col md:flex-row gap-x-5 py-5">
             <div className="shrink-0 md:border-r md:border-muted-foreground flex flex-col justify-center">
               <p className="md:pr-5 text-muted-foreground text-sm">

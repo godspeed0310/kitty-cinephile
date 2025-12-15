@@ -3,7 +3,7 @@ import { baseProcedure, createTRPCRouter } from "@/trpc";
 import { readItem, readItems } from "@directus/sdk";
 import z from "zod";
 
-const fields = [
+const homeFields = [
   "title",
   "date_created",
   "date_updated",
@@ -26,6 +26,45 @@ const fields = [
   },
 ] as const;
 
+const detailsFields = [
+  "title",
+  "date_created",
+  "date_updated",
+  "media_type",
+  "categories",
+  "content",
+  "featured_image",
+  "summary",
+  "id",
+  "status",
+  "rating",
+  {
+    user_created: [
+      "id",
+      "first_name",
+      "last_name",
+      "email",
+      "avatar",
+      "description",
+    ],
+    metadata: [
+      "external_id",
+      "title",
+      "overview",
+      "release_date",
+      "runtime",
+      "rating",
+      "directors",
+      "cast",
+      "producers",
+      "writers",
+      "creators",
+      "cinematographers",
+      "genres",
+    ],
+  },
+] as const;
+
 export const blogsRouter = createTRPCRouter({
   getAll: baseProcedure
     .input(
@@ -42,7 +81,7 @@ export const blogsRouter = createTRPCRouter({
             limit: limit + 1,
             offset: cursor,
             filter: { status: { _eq: "published" } },
-            fields: fields.filter((field) => field !== "content"),
+            fields: homeFields.filter((field) => field !== "content"),
             sort: ["-date_created"],
           })
         )
@@ -60,7 +99,7 @@ export const blogsRouter = createTRPCRouter({
     .input(z.object({ blogId: z.uuid() }))
     .query(async ({ ctx, input }) => {
       return await ctx.directus
-        .request(readItem("blogs", input.blogId, { fields }))
+        .request(readItem("blogs", input.blogId, { fields: detailsFields }))
         .catch((error) => handleError(error));
     }),
 });

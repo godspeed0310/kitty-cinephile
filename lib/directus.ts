@@ -17,9 +17,27 @@ type DirectusNewsletterSubscription = {
   tags: Array<string>;
 };
 
+type BlogMetadata = {
+  id: string;
+  title: string;
+  overview: string;
+  release_date: string;
+  runtime: number;
+  rating: number;
+  directors: Array<string> | null;
+  creators: Array<string> | null;
+  writers: Array<string> | null;
+  producers: Array<string> | null;
+  cast: Array<string>;
+  genres: Array<string>;
+  cinematographers: Array<string> | null;
+  external_id: number;
+};
+
 type DirectusSchema = {
   directus_users: Array<DirectusUser>;
   newsletter_subscriptions: Array<DirectusNewsletterSubscription>;
+  blog_metadata: BlogMetadata;
   blogs: {
     id: string;
     status: "draft" | "published" | "archived";
@@ -27,12 +45,14 @@ type DirectusSchema = {
     date_updated: string;
     user_created: DirectusUser;
     user_updated: DirectusUser;
+    media_type: "movie" | "tv";
     title: string;
     categories: Array<string>;
     featured_image: string;
     summary: string;
     content: string;
     rating: number;
+    metadata: BlogMetadata;
   }[];
 };
 
@@ -43,4 +63,3 @@ export const directus = createDirectus<DirectusSchema>(
   .with(rest());
 
 export type { DirectusSchema };
-
