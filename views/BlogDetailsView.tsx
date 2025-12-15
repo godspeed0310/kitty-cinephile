@@ -31,13 +31,20 @@ const BlogDetailsView = ({ blogId }: Props) => {
       itemReviewed: {
         "@type": details.media_type === "movie" ? "Movie" : "TVSeries",
         name: details.metadata.title,
+        image: directusImageLoader({
+          src: details.featured_image,
+          width: 1200,
+          quality: 85,
+        }),
+        ...(details.metadata.directors &&
+          details.metadata.directors.length > 0 && {
+            director: details.metadata.directors.map((director) => ({
+              "@type": "Person",
+              name: director,
+            })),
+          }),
         genre: details.metadata.genres,
         datePublished: details.metadata.release_date,
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: details.metadata.rating,
-          bestRating: 10,
-        },
       },
       reviewRating: {
         "@type": "Rating",
