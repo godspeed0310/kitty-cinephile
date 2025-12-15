@@ -30,6 +30,7 @@ const FeaturedBlog = ({ blog }: Props) => {
             loader={directusImageLoader}
             alt={blog.title}
             fill
+            sizes="(min-width: 1360px) 1241px, calc(94.33vw - 22px)"
             className="w-full h-full object-cover"
             loading="eager"
             fetchPriority="high"

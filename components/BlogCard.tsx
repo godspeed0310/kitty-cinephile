@@ -22,6 +22,7 @@ const BlogCard = ({ blog }: Props) => {
             className="aspect-video"
             loading="lazy"
             fetchPriority="low"
+            sizes="(min-width: 1360px) 400px, (min-width: 1040px) calc(26.67vw + 43px), (min-width: 780px) calc(50vw - 30px), calc(100vw - 40px)"
           />
         </div>
         <h2 className="text-xl font-bold line-clamp-2 mt-2 font-noto-serif-display wrap-break-word">
