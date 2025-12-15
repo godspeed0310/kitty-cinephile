@@ -22,7 +22,6 @@ const BlogCard = ({ blog }: Props) => {
             className="aspect-video"
             loading="lazy"
             fetchPriority="low"
-            quality={75}
           />
         </div>
         <h2 className="text-xl font-bold line-clamp-2 mt-2 font-noto-serif-display wrap-break-word">

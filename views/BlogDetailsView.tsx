@@ -91,7 +91,6 @@ const BlogDetailsView = ({ blogId }: Props) => {
           className="object-cover"
           priority
           fetchPriority="high"
-          quality={85}
         />
       </div>
       <div className="w-full flex flex-col-reverse md:flex-row gap-3 mt-3">

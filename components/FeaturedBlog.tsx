@@ -33,7 +33,6 @@ const FeaturedBlog = ({ blog }: Props) => {
             className="w-full h-full object-cover"
             loading="eager"
             fetchPriority="high"
-            quality={85}
           />
         </div>
         <div className="hidden md:block md:absolute md:inset-0 bg-linear-to-t from-background/90 via-background/40 to-transparent z-10" />
